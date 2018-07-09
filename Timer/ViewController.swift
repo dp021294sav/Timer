@@ -18,6 +18,11 @@ class ViewController: UIViewController {
     var seconds = 0
     var timer: Timer?
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        buttonIsEnabled(start: true, stop: false)
+    }
+    
     func setTimer() {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
     }
@@ -26,15 +31,6 @@ class ViewController: UIViewController {
         startButton.isEnabled = start
         stopButton.isEnabled = stop
     }
-    
-    func switchIsEnabled(condition: Bool) {
-        switchValue.isEnabled = condition
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        buttonIsEnabled(start: true, stop: false)
-    }
 
     @IBAction func switchValueChanged(_ sender: Any) {
         buttonIsEnabled(start: true, stop: false)
@@ -42,22 +38,20 @@ class ViewController: UIViewController {
     @IBAction func startButtonPressed(_ sender: Any) {
         setTimer()
         buttonIsEnabled(start: false, stop: true)
-        switchIsEnabled(condition: false)
+        switchValue.isEnabled = false
     }
     @IBAction func stopButtonPressed(_ sender: Any) {
         timer?.invalidate()
-        switchIsEnabled(condition: true)
+        switchValue.isEnabled = true
         buttonIsEnabled(start: true, stop: false)
     }
     
     @objc func updateTimer() {
-        if switchValue.isOn == true {
+        if switchValue.isOn {
             seconds += 1
         } else {
             seconds -= 1
         }
         timerLabel.text = String(seconds)
     }
-    
 }
-
